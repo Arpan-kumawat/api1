@@ -140,6 +140,73 @@ app.get("/get/nonvegfood", (req, res) => {
     });
 });
 
+
+
+const voiceSchema = new mongoose.Schema({
+  name: String,
+  voiceUrl: String,
+   new_Date:String
+  // other fields as per your requirements
+});
+
+// Create a model based on the schema
+const Voice = mongoose.model('Voice', voiceSchema);
+
+app.get('/voices/:id', async (req, res) => {
+  try {
+    const voice = await Voice.findById(req.params.id);
+    if (!voice) {
+      return res.status(404).json({ error: 'Voice not found' });
+    }
+    res.json(voice);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//Routes get voices
+app.get("/get/voices", (req, res) => {
+  Voice
+    .find()
+    .then((data) => {
+      res.send({ status: true, message: "Success", data: data });
+      // res.status(200).json({
+      //     data
+      // });
+    })
+    .catch((err) => {
+      console.log(err);
+      // res.status(500).json({
+      //     error: err
+      // })
+      res.send({ status: false, message: "Something Went Wrong !", data: [] });
+    });
+});
+
+
+//Routes post food item
+app.post("/post/voices", (req, res) => {
+  const { name, voiceUrl } = req.body;
+
+  const new_Date = new Date().toLocaleDateString();
+  const voiceApi = new Voice({
+    name,
+    voiceUrl,
+    new_Date,
+  });
+  voiceApi.save((err) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ status: true, message: "voiceApi update " });
+    }
+  });
+});
+
+
+
+
 app.all("/", (req, res) => {
   res.send("Yo!");
 });
