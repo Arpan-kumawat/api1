@@ -5,6 +5,7 @@ import Itempost from "./SchemaItemPost.js";
 import multer from "multer";
 import ItempostVeg from "./SchemaVegItem.js";
 import ItempostNonVeg from "./SchemaNonvegItem.js";
+import user4 from "./Schemnaregister.js"
 
 mongoose.set("strictQuery", false);
 const app = express();
@@ -204,7 +205,47 @@ app.post("/post/voices", (req, res) => {
   });
 });
 
+//Routes register
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
+  user4.findOne({ email: email }, (err, user) => {
+    if (user) {
+      res.send({ message: "User already registerd" });
+    } else {
+      const new_Date = new Date().toLocaleDateString();
+ 
+      const user23 = new user4({
+        name,
+        email,
+        password,
+        new_Date
+      });
+      user23.save((err) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send({ message: "Successfully Registered, Please login now." });
+        }
+      });
+    }
+  });
+});
 
+//Routes login
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  user4.findOne({ email: email }, (err, user) => {
+    if (user) {
+      if (password === user.password) {
+        res.send({ message: "Login Successfull", user: user });
+      } else {
+        res.send({ message: "Password didn't match" });
+      }
+    } else {
+      res.send({ message: "User not registered" });
+    }
+  });
+});
 
 
 app.all("/", (req, res) => {
