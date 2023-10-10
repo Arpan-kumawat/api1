@@ -9,7 +9,8 @@ import user4 from "./Schemnaregister.js"
 import fileUpload from 'express-fileupload';
 import ExcelJS from 'exceljs';
 import axios from 'axios';
-
+// const dotenv = require('dotenv');
+// dotenv.config({ path: __dirname+'/.env' });
 
 mongoose.set("strictQuery", false);
 const app = express();
@@ -272,7 +273,7 @@ app.post("/login", (req, res) => {
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 const RANDOMUSER_API_URL = 'https://randomuser.me/api/?results=100';
-const API_KEY = 'sk-';  // Remember to use your actual OpenAI API Key
+const API_KEY = process.env.API_CONNECTION_STR; // Remember to use your actual OpenAI API Key
 
 // Existing endpoint for analysis
 app.post('/getAnalysis', async (req, res) => {
