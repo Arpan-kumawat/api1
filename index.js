@@ -272,7 +272,7 @@ app.post("/login", (req, res) => {
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 const RANDOMUSER_API_URL = 'https://randomuser.me/api/?results=100';
-const API_KEY = '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';  // Remember to use your actual OpenAI API Key
+const API_KEY = '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';  // Remember to use your actual OpenAI API Key
 
 // Existing endpoint for analysis
 app.post('/getAnalysis', async (req, res) => {
