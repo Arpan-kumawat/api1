@@ -6,13 +6,33 @@ import multer from "multer";
 import ItempostVeg from "./SchemaVegItem.js";
 import ItempostNonVeg from "./SchemaNonvegItem.js";
 import user4 from "./Schemnaregister.js"
+import fileUpload from 'express-fileupload';
+import ExcelJS from 'exceljs';
+import axios from 'axios';
+
 
 mongoose.set("strictQuery", false);
 const app = express();
+// const fileUpload = require('express-fileupload');
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(fileUpload());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
+
+
+
+// const ExcelJS = require('exceljs');
+// const axios = require('axios');
+
+
+
+
+
+
+
+
+
 
 mongoose.connect(
   "mongodb+srv://Arpan:arpan@foodorder.o4lgl0b.mongodb.net/?retryWrites=true&w=majority",
