@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const foodPost = new mongoose.Schema({
-    itemName:String , new_Date:String,bupload: String,
+    name:String ,  artist:String, new_Date:String,bupload: String,audio:String
 })
 const Itempost = new mongoose.model("Food", foodPost)
 

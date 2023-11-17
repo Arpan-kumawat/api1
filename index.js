@@ -16,8 +16,8 @@ mongoose.set("strictQuery", false);
 const app = express();
 // const fileUpload = require('express-fileupload');
 app.use(express.json());
-app.use(express.urlencoded());
-app.use(fileUpload());
+app.use(express.urlencoded({ extended: true }));
+// app.use(fileUpload());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
@@ -25,12 +25,6 @@ app.use("/uploads", express.static("uploads"));
 
 // const ExcelJS = require('exceljs');
 // const axios = require('axios');
-
-
-
-
-
-
 
 
 
@@ -58,26 +52,38 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-//Routes post food item
-app.post("/food", upload.single("bupload"), (req, res) => {
-  const new_Date = new Date().toLocaleDateString();
+const cpUpload = upload.fields([
+  { name: "bupload" },
+  { name: "audio" },
 
-  const { itemName } = req.body;
+]);
 
-  const bupload = req.file ? req.file.filename : null;
 
-  const Itemdesc = new Itempost({
-    itemName,
-    bupload,
-    new_Date,
-  });
-  Itemdesc.save((err) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send({ status: true, message: "Item Added" });
-    }
-  });
+
+//Routes post food item//music
+app.post("/music", cpUpload, async (req, res) => {
+  try {
+    const new_Date = new Date().toLocaleDateString();
+    const { name,artist} = req.body;
+
+    const bupload = req.files["bupload"][0].filename;
+    const audio = req.files["audio"][0].filename;
+    
+
+
+    const Itemdesc = new Itempost({
+      name,artist,
+      bupload,
+      new_Date,
+      audio
+    });
+
+    await Itemdesc.save();
+    res.send({ status: true, message: "Item Added" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ status: false, message: "Internal Server Error" });
+  }
 });
 
 //Routes get food item
@@ -99,6 +105,9 @@ app.post("/vegfood", upload.single("vegupload"), (req, res) => {
   const { itemName, itemPrice } = req.body;
 
   const vegupload = req.file ? req.file.filename : null;
+
+  
+
 
   const Itemdesc = new ItempostVeg({
     itemName,
