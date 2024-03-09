@@ -179,6 +179,7 @@ const voiceSchema = new mongoose.Schema({
   image:String,
   music:String,
   voiceUrl: String,
+    trending:Boolean,
    new_Date:String
   // other fields as per your requirements
 });
@@ -221,14 +222,14 @@ app.get("/get/voices", (req, res) => {
 
 //Routes post food item
 app.post("/post/voices", (req, res) => {
-   const { name, voiceUrl,description ,image,music} = req.body;
+   const { name, voiceUrl,description ,image,music,trending} = req.body;
 
   const new_Date = new Date().toLocaleDateString();
   const voiceApi = new Voice({
     name,
     description,
     voiceUrl,
-    image,music,
+    image,music,trending,
     new_Date,
   });
   voiceApi.save((err) => {
